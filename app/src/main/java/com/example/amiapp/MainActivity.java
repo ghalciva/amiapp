@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
+        //validar inicio de sesion, extraer datos de api
 
     }
 }
