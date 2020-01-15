@@ -107,7 +107,7 @@ public class RegisterUser extends AppCompatActivity {
                         }
                         if (digito_validador == ultimo_digito){
                             Log.d("validar","Número de cédula válido");
-                            Enviar();
+                            ValidarCamposVacios();
                         }else {
                             Log.d("validar","Número de cédula inválido");
                             Toast.makeText(getApplicationContext(),"Número de cédula no válido",Toast.LENGTH_LONG).show();
@@ -205,7 +205,9 @@ public class RegisterUser extends AppCompatActivity {
     }
 
     private void ValidarContrasena(){
-        if (txtCreateConfirmPass.getText().toString() != txtCreatePass.getText().toString()){
+        if (txtCreateConfirmPass.getText().toString() == txtCreatePass.getText().toString()){
+            Enviar();
+        }else{
             Toast.makeText(getApplicationContext(), "La contraseña no es la misma", Toast.LENGTH_LONG).show();
         }
     }
