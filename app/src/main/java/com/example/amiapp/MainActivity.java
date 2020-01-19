@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     TextView txtid;
     TextView txtPass;
-
-    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +65,14 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HomeLaw.class);
-                startActivity(intent);
                 session();
             }
         });
 
         getSupportActionBar().hide();
+
+        txtid.setError(null);
+        txtPass.setError(null);
     }
 
 
@@ -80,39 +80,48 @@ public class MainActivity extends AppCompatActivity {
 
         //validar inicio de sesion, extraer datos de api
         String URL = "http://68.66.207.7:3000/api/ciudadano";
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.POST,
-                URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        )
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> headers = new HashMap<String, String>();
+        //validar inicio de sesion, extraer datos de api
+        //String URL = "http://68.66.207.7:3000/api/login";
+        String cedula = txtid.getText().toString();
+        String password = txtPass.getText().toString();
 
-                //String fecha_nacimiento = txtCreateBirthDate.getText().toString();
-                //String correo = txtCreateEmail.getText().toString();
-                //String sexo = txtCreateSex.getText().toString();
 
-                //headers.put("fecha_nacimiento",fecha_nacimiento);
-                //headers.put("correo",correo);
-                //headers.put("sexo",sexo);
-                return headers;
-            }
-        };
-        requestQueue.add(stringRequest);
+        /*Bandera evidenciar algun error durante la validación de los datos
+        Variable para contener el campo a ser enfocado*/
+        boolean cancel = false;
+        View focusView = null;
+
+        //Comprobar si el campo para el cedula esta vacio.
+        if (TextUtils.isEmpty(cedula)) {
+            /**Envia el error a la caja de Texto*/
+            txtid.setError("");
+            txtid.setError("Ingrese número cédula");
+            //Toast.makeText(getApplicationContext(),"Ingrese cédula ecuatoriana",Toast.LENGTH_LONG).show();
+            focusView = txtid;
+            cancel = true;
+        }
+
+        //Comprobar si el password ingresado no es nulo y es valido
+        if (TextUtils.isEmpty(password)) {
+            /**Envia el error a la caja de Texto*/
+            txtid.setError("");
+            txtPass.setError("Ingrese contraseña");
+            //Toast.makeText(getApplicationContext(),"Ingrese contraseña",Toast.LENGTH_LONG).show();
+            focusView = txtPass;
+            cancel = true;
+        }
+        if (!TextUtils.isEmpty(cedula) && !TextUtils.isEmpty(password)){
+            Intent intent = new Intent(MainActivity.this, HomeLaw.class);
+            startActivity(intent);
+        }
 
     }
+
+
+    /*Comprobar si la contraseña ingresada cumple con restricciones establecidas
+    private boolean isIdValid(String id) {
+        /**Si la cadena supera los 4 caracteres es una contraseña valida
+        return id.length() ==10 ;
+    }*/
+
 }
