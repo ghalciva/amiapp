@@ -3,11 +3,18 @@ package com.example.amiapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +25,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LawDetail extends AppCompatActivity {
     Button btnCompartir, btnAgree, btnDesagree;
-    TextView getTitleLaw1;
-    TextView getContentLaw1;
-    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +43,7 @@ public class LawDetail extends AppCompatActivity {
         btnCompartir = findViewById(R.id.btnCompartir);
         btnAgree = findViewById(R.id.btnAgree);
         btnDesagree = findViewById(R.id.btnDesagree);
-        getContentLaw1 = findViewById(R.id.getContentLaw1);
-        getTitleLaw1 = findViewById(R.id.getTitleLaw1);
 
-        requestQueue = Volley.newRequestQueue(this);
-
-        getData();
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,13 +93,6 @@ public class LawDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        getData();
-    }
-
-    private void getData(){
-        String url = "http://68.66.207.7:3000/api/ley";
-
-
     }
 
 }
