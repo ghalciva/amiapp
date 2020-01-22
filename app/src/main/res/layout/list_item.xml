@@ -16,6 +16,15 @@
         android:id="@+id/descripcion"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:textStyle="bold" />
+        android:paddingBottom="2dip" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Leer más"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:backgroundTint="@color/colorLinks"
+        />
 </LinearLayout>

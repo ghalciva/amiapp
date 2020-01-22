@@ -1,7 +1,5 @@
 package com.example.amiapp;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -17,16 +15,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -57,19 +48,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeLaw extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    Button btnLeerM1;
-    Button btnLeerM2;
     ListView listView;
+    private String TAG = HomeLaw.class.getSimpleName();
+    private static String url = "http://68.66.207.7/api/ley/";
+
+    ArrayList<HashMap<String, String>> lawList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_law);
-/*
-        btnLeerM1 = findViewById(R.id.btnLeerM1);
-        btnLeerM2 = findViewById(R.id.btnLeerM2);
-*/
-        listView = findViewById(R.id.listView);
+
         cargarLeyes();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -110,56 +99,100 @@ public class HomeLaw extends AppCompatActivity {
     }
 */
 
-    private void cargarLeyes (){
+    public void cargarLeyes(){
+        new GetLaws().execute();
+    }
 
-        //Creating a retrofit object
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Api.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
-                .build();
+    private class GetLaws extends AsyncTask<String, String, String> {
 
-        //creating the api interface
-        Api api = retrofit.create(Api.class);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
-        //now making the call object
-        //Here we are using the api method that we created inside the api interface
-        Call<List<Ley>> call = api.getLeyes();
+        @Override
+        protected String doInBackground(String... arg0) {
+            HashMap<String, String> contact;
+            HttpHandler sh = new HttpHandler();
+            lawList = new ArrayList<>();
 
-        //then finallly we are making the call using enqueue()
-        //it takes callback interface as an argument
-        //and callback is having two methods onRespnose() and onFailure
-        //if the request is successfull we will get the correct response and onResponse will be executed
-        //if there is some error we will get inside the onFailure() method
-        call.enqueue(new Callback<List<Ley>>() {
-            @Override
-            public void onResponse(Call<List<Ley>> call, Response<List<Ley>> response) {
 
-                //In this point we got our hero list
-                //thats damn easy right ;)
-                List<Ley> leyList = response.body();
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(url);
 
-                //Creating an String array for the ListView
-                final String[] leyes = new String[leyList.size()];
+            Log.i(TAG, "Response from url: " + jsonStr);
 
-                //looping through all the heroes and inserting the names inside the string array
-                for (int i = 0; i < leyList.size(); i++) {
-                    leyes[i] = leyList.get(i).getNombre();
-                    Log.i("tag", "onResponse: "+leyes[i]);
+            if (jsonStr != null) {
+                try {
+                    // Getting JSON Array node
+                    JSONArray contacts;
+                    contacts= new JSONArray(jsonStr);
+
+                    // looping through All Contacts
+                    for (int i = 0; i < contacts.length(); i++) {
+                        JSONObject c = contacts.getJSONObject(i);
+
+                        String id = c.getString("_id");
+                        String nombre = c.getString("nombre");
+                        String descripcion = c.getString("descripcion");
+
+                        // tmp hash map for single contact
+                        contact = new HashMap<>();
+
+                        // adding each child node to HashMap key => value
+                        contact.put("id", id);
+                        contact.put("nombre", nombre);
+                        contact.put("descripcion", descripcion);
+
+                        // adding contact to contact list
+                        lawList.add(contact);
+                        //Log.i("a","d"+contact);
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+
                 }
-
-                //displaying the string array into listview
-                listView.setAdapter(new ArrayAdapter<>(HomeLaw.this, android.R.layout.simple_list_item_2, leyes));
-//
+            } else {
+                Log.e(TAG, "Couldn't get json from server. No internet connection!");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),
+                                "Couldn't get json from server. No internet connection!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
 
             }
+            return null;
+        }
 
-            @Override
-            public void onFailure(Call<List<Ley>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("tag", "error");
-            }
-        });
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            listView = findViewById(R.id.listView);
+
+            ListAdapter adapter = new SimpleAdapter(
+                    HomeLaw.this, lawList,
+                    R.layout.list_item, new String[]{"nombre", "descripcion"}, new int[]{R.id.nombre, R.id.descripcion});
+
+            listView.setAdapter(adapter);
+        }
 
     }
+
+
+
 
 }
