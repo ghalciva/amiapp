@@ -1,10 +1,19 @@
 package com.example.amiapp;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
@@ -15,7 +24,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class RegisterUser extends AppCompatActivity {
@@ -25,11 +38,13 @@ public class RegisterUser extends AppCompatActivity {
     EditText txtCreateNames;
     EditText txtCreateLastNames;
     EditText txtCreateBirthDate;
-    EditText txtCreateSex;
+    Spinner spinner;
     EditText txtCreateEmail;
     EditText txtCreatePass;
     EditText txtCreateConfirmPass;
     RequestQueue requestQueue;
+    DatePickerDialog.OnDateSetListener setListener;
+    ArrayAdapter<String> myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +55,15 @@ public class RegisterUser extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        createAcc = findViewById(R.id.btnArticulos);
+        createAcc = findViewById(R.id.btnCreate);
         txtIdentityNumber = findViewById(R.id.txtIdentityNumber);
         txtCreateNames = findViewById(R.id.txtCreateNames);
         txtCreateLastNames = findViewById(R.id.txtCreateLastNames);
-        txtCreateBirthDate = findViewById(R.id.txtCreateBirthDate);
-        txtCreateSex = findViewById(R.id.txtCreateSex);
+        spinner = findViewById(R.id.txtCreateSex);
         txtCreateEmail = findViewById(R.id.txtCreateEmail);
         txtCreatePass = findViewById(R.id.txtCreatePass);
         txtCreateConfirmPass = findViewById(R.id.txtCreateConfirmPass);
+        txtCreateBirthDate = findViewById(R.id.txtCreateBirthDate);
 
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,13 +125,39 @@ public class RegisterUser extends AppCompatActivity {
                         }
                     }
                 }
-
             }
         });
+
+        txtCreateBirthDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(RegisterUser.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        setListener, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                Log.d("tag", "date: " + i + "/" + i1 + "/" + i2);
+                txtCreateBirthDate.setText(i+"/"+(i1+1)+"/"+i2);
+            }
+        };
+
+        myAdapter = new ArrayAdapter<String>(RegisterUser.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.genre));
+        myAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(myAdapter);
+
     }
 
     private void ValidarCamposVacios() {
-
         //validar textos completo
         if (txtIdentityNumber.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "Campo de cédula vacío", Toast.LENGTH_LONG).show();
@@ -133,7 +174,7 @@ public class RegisterUser extends AppCompatActivity {
                         if (txtCreateBirthDate.getText().toString().isEmpty()){
                             Toast.makeText(getApplicationContext(), "Campo de fecha de nacimiento vacío", Toast.LENGTH_LONG).show();
                         }else{
-                            if (txtCreateSex.getText().toString().isEmpty()){
+                            if (spinner.toString().isEmpty()){
                                 Toast.makeText(getApplicationContext(), "Campo de género vacío", Toast.LENGTH_LONG).show();
                             }else{
                                 if (txtCreateEmail.getText().toString().isEmpty()){
@@ -151,7 +192,6 @@ public class RegisterUser extends AppCompatActivity {
         }
 
         ValidarContrasena();
-
     }
 
     private void Enviar() {
@@ -177,8 +217,6 @@ public class RegisterUser extends AppCompatActivity {
         )
         {
 
-
-            //wehn estado is aprobado
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> headers = new HashMap<String, String>();
@@ -208,8 +246,6 @@ public class RegisterUser extends AppCompatActivity {
             Enviar();
         }else{
             Toast.makeText(getApplicationContext(), "La contraseña no es la misma", Toast.LENGTH_LONG).show();
-
-
         }
     }
 }

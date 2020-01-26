@@ -33,12 +33,13 @@ public class Law {
         this.id = id;
     }
 
-    public String getEstado() {
+    public String getEstado(String estado) {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public String setEstado(String estado) {
         this.estado = estado;
+        return estado;
     }
 
     public String getIdperiodo() {

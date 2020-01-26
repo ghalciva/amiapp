@@ -56,6 +56,7 @@
                 android:ems="13"
                 android:hint="Cédula de identidad"
                 android:inputType="number"
+                android:maxLength="10"
                 android:textColor="#B3B3B3"
                 android:textSize="14sp" />
 
@@ -95,17 +96,15 @@
                 android:textColor="#B3B3B3"
                 android:textSize="14sp" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/txtCreateSex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10sp"
                 android:background="@drawable/style_border_txt"
-                android:ems="13"
-                android:hint="Sexo"
-                android:inputType="text"
-                android:textColor="#B3B3B3"
-                android:textSize="14sp" />
+                android:spinnerMode="dropdown"
+                style="@android:style/Widget.Spinner.DropDown"
+                android:theme="@style/spinnerItems"/>
 
             <EditText
                 android:id="@+id/txtCreateEmail"
@@ -144,7 +143,7 @@
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/btnArticulos"
+                android:id="@+id/btnCreate"
                 android:layout_width="154dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25sp"

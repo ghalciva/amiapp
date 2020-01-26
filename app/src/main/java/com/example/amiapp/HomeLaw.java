@@ -86,19 +86,23 @@ public class HomeLaw extends AppCompatActivity {
         request = new JsonArrayRequest(JSON_URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+
                 JSONObject jsonObject = null;
                 for (int i =0; i < response.length(); i++){
                     try {
                         jsonObject = response.getJSONObject(i);
                         Law law = new Law();
-                        law.setId(jsonObject.getString("_id"));
-                        law.setNombre(jsonObject.getString("nombre"));
-                        law.setDescripcion(jsonObject.getString("descripcion"));
-                        law.setFechaPublicacion(jsonObject.getString("fecha_publicacion"));
-                        law.setCodDecreto(jsonObject.getString("cod_decreto"));
-                        law.setProponente(jsonObject.getString("proponente"));
+                        String est = law.setEstado(jsonObject.getString("estado"));
+                        if (est.equals("Aprobado")){
+                            law.setId(jsonObject.getString("_id"));
+                            law.setNombre(jsonObject.getString("nombre"));
+                            law.setDescripcion(jsonObject.getString("descripcion"));
+                            law.setFechaPublicacion(jsonObject.getString("fecha_publicacion"));
+                            law.setCodDecreto(jsonObject.getString("cod_decreto"));
+                            law.setProponente(jsonObject.getString("proponente"));
 
-                        listLaw.add(law);
+                            listLaw.add(law);
+                        }
 
                     }catch (JSONException e){
                         e.printStackTrace();
@@ -106,6 +110,7 @@ public class HomeLaw extends AppCompatActivity {
                 }
                 setuprecyclerview(listLaw);
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -122,12 +127,7 @@ public class HomeLaw extends AppCompatActivity {
         RecyclerViewAdapter myadapter;
         myadapter = new RecyclerViewAdapter(this, lstLaw);
         recyclerView = findViewById(R.id.recyclerviewid);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setAdapter(myadapter);
-
     }
-
-
 }
