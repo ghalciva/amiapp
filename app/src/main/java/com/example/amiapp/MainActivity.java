@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +19,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     TextView txtid;
     TextView txtPass;
+    private JsonArrayRequest request;
+    private static final String URL = "http://68.66.207.7:3000/api/ciudadano";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +87,38 @@ public class MainActivity extends AppCompatActivity {
     private void session(){
 
         //validar inicio de sesion, extraer datos de api
-        String URL = "http://68.66.207.7:3000/api/ciudadano";
-        //validar inicio de sesion, extraer datos de api
-        //String URL = "http://68.66.207.7:3000/api/login";
+        /*request = new JsonArrayRequest (URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                JSONObject jsonObject = null;
+
+                for (int i =0; i < response.length(); i++){
+                    try {
+                        jsonObject = response.getJSONObject(i);
+
+                        String idc = jsonObject.getString("cedula").trim();
+                        String passc = jsonObject.getString("contrasena").trim();
+
+                        Map<String, String> params = new HashMap<>();
+                        params.put("cedula", idc);
+                        params.put("constrasena", passc);
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+*/
+
         String cedula = txtid.getText().toString();
         String password = txtPass.getText().toString();
-
 
         /*Bandera evidenciar algun error durante la validación de los datos
         Variable para contener el campo a ser enfocado*/
@@ -96,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
             /**Envia el error a la caja de Texto*/
             txtid.setError("");
             txtid.setError("Ingrese número cédula");
-            //Toast.makeText(getApplicationContext(),"Ingrese cédula ecuatoriana",Toast.LENGTH_LONG).show();
             focusView = txtid;
             cancel = true;
         }
@@ -104,9 +137,8 @@ public class MainActivity extends AppCompatActivity {
         //Comprobar si el password ingresado no es nulo y es valido
         if (TextUtils.isEmpty(password)) {
             /**Envia el error a la caja de Texto*/
-            txtid.setError("");
+            txtPass.setError("");
             txtPass.setError("Ingrese contraseña");
-            //Toast.makeText(getApplicationContext(),"Ingrese contraseña",Toast.LENGTH_LONG).show();
             focusView = txtPass;
             cancel = true;
         }
@@ -123,5 +155,7 @@ public class MainActivity extends AppCompatActivity {
         /**Si la cadena supera los 4 caracteres es una contraseña valida
         return id.length() ==10 ;
     }*/
+
+
 
 }

@@ -15,7 +15,7 @@ public class SetPass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setpass);
 
-        btnSaveNewPass = findViewById(R.id.btnCreateAcc);
+        btnSaveNewPass = findViewById(R.id.btnArticulos);
         btnSaveNewPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

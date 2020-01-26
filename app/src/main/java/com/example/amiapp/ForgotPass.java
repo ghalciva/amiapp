@@ -16,7 +16,7 @@ public class ForgotPass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgotpass);
 
-        btnSendPass = findViewById(R.id.btnCreateAcc);
+        btnSendPass = findViewById(R.id.btnArticulos);
         btnSendPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

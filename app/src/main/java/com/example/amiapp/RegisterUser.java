@@ -15,10 +15,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +40,7 @@ public class RegisterUser extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        createAcc = findViewById(R.id.btnCreateAcc);
+        createAcc = findViewById(R.id.btnArticulos);
         txtIdentityNumber = findViewById(R.id.txtIdentityNumber);
         txtCreateNames = findViewById(R.id.txtCreateNames);
         txtCreateLastNames = findViewById(R.id.txtCreateLastNames);
@@ -159,10 +155,9 @@ public class RegisterUser extends AppCompatActivity {
     }
 
     private void Enviar() {
-        ValidarCamposVacios();
 
         //conectarse con la bd y enviar datos
-        String URL = "http://68.66.207.7:3000/api/ciudadano";
+        String URL = "http://68.66.207.7/api/ciudadano";
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -181,6 +176,9 @@ public class RegisterUser extends AppCompatActivity {
                 }
         )
         {
+
+
+            //wehn estado is aprobado
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> headers = new HashMap<String, String>();
@@ -205,10 +203,13 @@ public class RegisterUser extends AppCompatActivity {
     }
 
     private void ValidarContrasena(){
-        if (txtCreateConfirmPass.getText().toString() == txtCreatePass.getText().toString()){
+
+        if ((txtCreateConfirmPass.getText().toString()) != (txtCreatePass.getText().toString())){
             Enviar();
         }else{
             Toast.makeText(getApplicationContext(), "La contraseña no es la misma", Toast.LENGTH_LONG).show();
+
+
         }
     }
 }

@@ -34,6 +34,8 @@ import java.util.HashMap;
 
 public class LawDetail extends AppCompatActivity {
     Button btnCompartir, btnAgree, btnDesagree;
+    private final String ART_JSON_URL = "http://68.66.207.7:3000/api/articulos";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,6 @@ public class LawDetail extends AppCompatActivity {
         btnCompartir = findViewById(R.id.btnCompartir);
         btnAgree = findViewById(R.id.btnAgree);
         btnDesagree = findViewById(R.id.btnDesagree);
-
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

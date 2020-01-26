@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20sp">
+    android:padding="20sp"
+    android:id="@+id/container">
 
     <TextView
         android:id="@+id/nombre"
@@ -16,15 +17,28 @@
         android:id="@+id/descripcion"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:maxLines="4"
         android:paddingBottom="2dip" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Leer más"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorLinks"
+        android:text="Conocer más"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:backgroundTint="@color/colorLinks"
-        />
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/line"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/colorLinks"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dip" />
+
 </LinearLayout>

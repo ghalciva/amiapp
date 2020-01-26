@@ -10,8 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Resume"></activity>
-        <activity android:name=".LawDetail"
-            android:parentActivityName=".LawOne"/>
         <activity
             android:name=".HomeLaw"
             android:label="@string/title_activity_home_law"
@@ -22,6 +20,9 @@
         <activity
             android:name=".LawOne"
             android:parentActivityName=".HomeLaw" />
+        <activity
+            android:name=".LawDetail"
+            android:parentActivityName=".LawOne"/>
         <activity
             android:name=".SetPass"
             android:parentActivityName=".ForgotPass" />
