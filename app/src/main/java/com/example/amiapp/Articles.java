@@ -65,7 +65,8 @@ public class Articles {
         return idley;
     }
 
-    public void setIdley(String idley) {
+    public String setIdley(String idley) {
         this.idley = idley;
+        return idley;
     }
 }

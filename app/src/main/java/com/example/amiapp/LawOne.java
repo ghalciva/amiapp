@@ -33,7 +33,11 @@ public class LawOne extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lawone);
 
-        String name = getIntent().getExtras().getString("nombre");
+        final String id =  getIntent().getExtras().getString("_id");
+
+        Log.i("law one", "idley "+id);
+
+        final String name = getIntent().getExtras().getString("nombre");
         String descripcion = getIntent().getExtras().getString("descripcion");
         String cod_decreto = getIntent().getExtras().getString("cod_decreto");
         String fecha_publicacion = getIntent().getExtras().getString("fecha_publicacion");
@@ -45,13 +49,11 @@ public class LawOne extends AppCompatActivity {
         TextView tv_fecha_publicacion = findViewById(R.id.fecha_publicacion);
         TextView tv_proponente = findViewById(R.id.proponente);
 
-
         tv_name.setText(name);
         tv_description.setText(descripcion);
         tv_cod_decreto.setText(cod_decreto);
         tv_fecha_publicacion.setText(fecha_publicacion);
         tv_proponente.setText(proponente);
-
 
         btnReadArticles = findViewById(R.id.btnArticulos);
 
@@ -62,7 +64,9 @@ public class LawOne extends AppCompatActivity {
         btnReadArticles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LawOne.this, LawDetail.class);
+                Intent intent = new Intent(LawOne.this, HomeArticle.class);
+                intent.putExtra("idley", id);
+                intent.putExtra("nombreley", name);
                 startActivity(intent);
             }
         });

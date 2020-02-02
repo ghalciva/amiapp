@@ -20,5 +20,11 @@
         <item> Masculino </item>
         <item> LGBTI / Otro </item>
     </string-array>
+
+    <string-array name="accs">
+        <item> Facebook </item>
+        <item> Twitter </item>
+        <item> WhatsApp </item>
+    </string-array>
     
 </resources>

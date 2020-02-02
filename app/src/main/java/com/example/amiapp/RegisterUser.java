@@ -1,6 +1,7 @@
 package com.example.amiapp;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -197,7 +198,7 @@ public class RegisterUser extends AppCompatActivity {
     private void Enviar() {
 
         //conectarse con la bd y enviar datos
-        String URL = "http://68.66.207.7/api/ciudadano";
+        String URL = "http://10.0.2.2:3000/api/ciudadano";
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -205,7 +206,11 @@ public class RegisterUser extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
                         Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RegisterUser.this, RedesSociales.class);
+                        //intent.putExtra("_id", );
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {
@@ -224,16 +229,10 @@ public class RegisterUser extends AppCompatActivity {
                 String apellido = txtCreateLastNames.getText().toString();
                 String cedula = txtIdentityNumber.getText().toString();
                 String contrasena = txtCreatePass.getText().toString();
-                //String fecha_nacimiento = txtCreateBirthDate.getText().toString();
-                //String correo = txtCreateEmail.getText().toString();
-                //String sexo = txtCreateSex.getText().toString();
                 headers.put("nombre",nombre);
                 headers.put("apellido",apellido);
                 headers.put("cedula",cedula);
                 headers.put("contrasena", contrasena);
-                //headers.put("fecha_nacimiento",fecha_nacimiento);
-                //headers.put("correo",correo);
-                //headers.put("sexo",sexo);
                 return headers;
             }
         };

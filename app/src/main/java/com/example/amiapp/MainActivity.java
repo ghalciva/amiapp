@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtid;
     TextView txtPass;
     private JsonArrayRequest request;
-    private static final String URL = "http://68.66.207.7:3000/api/ciudadano";
+    private static final String URL = "http://10.0.2.2:3000/api/ciudadano";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

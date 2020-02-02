@@ -34,7 +34,7 @@ public class HomeLaw extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
-    private final String JSON_URL = "http://68.66.207.7:3000/api/ley";
+    private final String JSON_URL = "http://10.0.2.2:3000/api/ley";
     private JsonArrayRequest request;
     private RequestQueue requestQueue;
     private  List<Law> listLaw;
@@ -100,7 +100,6 @@ public class HomeLaw extends AppCompatActivity {
                             law.setFechaPublicacion(jsonObject.getString("fecha_publicacion"));
                             law.setCodDecreto(jsonObject.getString("cod_decreto"));
                             law.setProponente(jsonObject.getString("proponente"));
-
                             listLaw.add(law);
                         }
 

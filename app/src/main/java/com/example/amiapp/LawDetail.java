@@ -34,8 +34,6 @@ import java.util.HashMap;
 
 public class LawDetail extends AppCompatActivity {
     Button btnCompartir, btnAgree, btnDesagree;
-    private final String ART_JSON_URL = "http://68.66.207.7:3000/api/articulos";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +44,21 @@ public class LawDetail extends AppCompatActivity {
         btnAgree = findViewById(R.id.btnAgree);
         btnDesagree = findViewById(R.id.btnDesagree);
 
+        String name = getIntent().getExtras().getString("name");
+        String detalle = getIntent().getExtras().getString("detalle");
+        String resumen = getIntent().getExtras().getString("resumen");
+        String exp_articulo = getIntent().getExtras().getString("exp_articulo");
+
+        TextView tv_name = findViewById(R.id.art_nombre);
+        TextView tv_detalle = findViewById(R.id.art_detalle);
+        TextView tv_descripcion = findViewById(R.id.artDescripcion);
+
+        tv_name.setText(name);
+        tv_detalle.setText(detalle);
+        tv_descripcion.setText(resumen);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         btnCompartir.setOnClickListener(new View.OnClickListener() {
             @Override

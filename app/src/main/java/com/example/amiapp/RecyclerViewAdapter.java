@@ -40,6 +40,7 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
             public void onClick(View v){
 
                 Intent i = new Intent(mContext, LawOne.class);
+                i.putExtra("_id", mData.get(viewHolder.getAdapterPosition()).getId());
                 i.putExtra("nombre", mData.get(viewHolder.getAdapterPosition()).getNombre());
                 i.putExtra("descripcion", mData.get(viewHolder.getAdapterPosition()).getDescripcion());
                 i.putExtra("cod_decreto", mData.get(viewHolder.getAdapterPosition()).getCodDecreto());
