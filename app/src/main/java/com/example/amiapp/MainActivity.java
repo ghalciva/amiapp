@@ -48,20 +48,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtForgotPass = findViewById(R.id.txtForgotPass);
+       // txtForgotPass = findViewById(R.id.txtForgotPass);
         txtRegister = findViewById(R.id.txtRegister);
         btnLogin = findViewById(R.id.btnLogin);
         txtid = findViewById(R.id.txtid);
         txtPass = findViewById(R.id.txtPass);
 
-        txtForgotPass.setOnClickListener(new View.OnClickListener() {
+/*        txtForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ForgotPass.class);
                 startActivity(intent);
             }
         });
-
+*/
         txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

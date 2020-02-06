@@ -206,10 +206,10 @@ public class RegisterUser extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        
                         Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(RegisterUser.this, RedesSociales.class);
-                        //intent.putExtra("_id", );
+                        //intent.putExtra("_id", id);
                         startActivity(intent);
                     }
                 },
@@ -247,4 +247,12 @@ public class RegisterUser extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "La contraseña no es la misma", Toast.LENGTH_LONG).show();
         }
     }
+
+    private String getId(){
+
+
+
+        return null;
+    }
+
 }

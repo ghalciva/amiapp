@@ -26,6 +26,7 @@ import java.util.List;
 public class HomeArticle extends AppCompatActivity {
 
     private final String JSON_URL = "http://10.0.2.2:3000/api/articulos";
+    //private final String JSON_URL = "http://68.66.207.7:3000/api/articulos";
     private JsonArrayRequest request;
     private RequestQueue requestQueue;
     private List<Articles> listArticle;

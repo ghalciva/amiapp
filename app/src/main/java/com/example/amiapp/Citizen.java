@@ -19,7 +19,7 @@ public class Citizen {
         this.contrasena = contrasena;
     }
 
-    public String getId() {
+    public String getId(String string) {
         return id;
     }
 
@@ -27,15 +27,15 @@ public class Citizen {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombre(String nombre) {
+        return this.nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
+    public String getApellido(String descripcion) {
         return apellido;
     }
 
@@ -43,7 +43,7 @@ public class Citizen {
         this.apellido = apellido;
     }
 
-    public String getCedula() {
+    public String getCedula(String fecha_publicacion) {
         return cedula;
     }
 
@@ -51,7 +51,7 @@ public class Citizen {
         this.cedula = cedula;
     }
 
-    public String getContrasena() {
+    public String getContrasena(String cod_decreto) {
         return contrasena;
     }
 
