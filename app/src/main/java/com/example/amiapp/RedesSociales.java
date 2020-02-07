@@ -43,8 +43,8 @@ public class RedesSociales extends AppCompatActivity {
         txtCuenta = findViewById(R.id.txtCuenta);
         btnSend = findViewById(R.id.btnSend);
 
-        Bundle bundle = getIntent().getExtras();
-        final String id = bundle.getString("_id").toString();
+//        Bundle bundle = getIntent().getExtras();
+  //      final String id = bundle.getString("_id").toString();
 
         spinner = findViewById(R.id.txtAccs);
         myAdapter = new ArrayAdapter<String>(RedesSociales.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.accs));
@@ -54,13 +54,13 @@ public class RedesSociales extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                enviar(id);
+                enviar();
             }
         });
 
     }
 
-    private void enviar(final String id){
+    private void enviar(){
 
         //conectarse bd
         //conectarse con la bd y enviar datos
@@ -93,7 +93,6 @@ public class RedesSociales extends AppCompatActivity {
                 String cuenta = spinner.getSelectedItem().toString();
                 headers.put("nombre",nombre);
                 headers.put("cuenta",cuenta);
-                headers.put("_id", id);
                 return headers;
             }
         };

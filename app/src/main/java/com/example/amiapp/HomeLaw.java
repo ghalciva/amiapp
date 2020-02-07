@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class HomeLaw extends AppCompatActivity {
 
@@ -54,7 +56,7 @@ public class HomeLaw extends AppCompatActivity {
 
         private final String JSON_URL = "http://10.0.2.2:3000/api/ley";
     //private final String JSON_URL = "http://68.66.207.7:3000/api/ley";
-        private static String url = "http://10.0.2.2:3000/api/ciudadano";
+        private final String url = "http://10.0.2.2:3000/api/ciudadano";
     //private static String url = "http://68.66.207.7:3000/api/ciudadano";
     private JsonArrayRequest request;
     private RequestQueue requestQueue;
@@ -74,6 +76,10 @@ public class HomeLaw extends AppCompatActivity {
         listCitizen = new ArrayList<>();
         buttonver = findViewById(R.id.button2);
         buttonSalir = findViewById(R.id.button);
+
+        View v = LayoutInflater.from(this).inflate(R.layout.fragment_tools, null);
+        lv = v.findViewById(R.id.list);
+
         cargarLeyes();
         cargarData();
 
@@ -199,7 +205,7 @@ public class HomeLaw extends AppCompatActivity {
     }
 
     public void cargarData(){
-       // new GetEvents().execute();
+        new GetEvents().execute();
     }
 
 
@@ -239,7 +245,7 @@ public class HomeLaw extends AppCompatActivity {
                         HashMap<String, String> event = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        event.put("id", id);
+                        event.put("_id", id);
                         event.put("nombre", name);
                         event.put("apellido", date);
                         event.put("cedula", address);
@@ -280,7 +286,6 @@ public class HomeLaw extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            lv = findViewById(R.id.list);
 
             ListAdapter adapter;
             adapter = new SimpleAdapter(
