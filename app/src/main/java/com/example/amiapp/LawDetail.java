@@ -3,7 +3,6 @@ package com.example.amiapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,19 +34,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class LawDetail extends AppCompatActivity {
-    private final String URL = "http://localhost:3000/api/comentarios";
     Button btnCompartir, btnAgree, btnDesagree, btnComentario;
-    EditText txtComentario;
+    TextView txtComentario;
+    TextView comentarioPublicado;
     RequestQueue requestQueue;
     ArrayAdapter<String> myAdapter;
-    TextView comentarioPublicado;
-
+    private final String URL = "http://10.0.2.2:3000/api/comentarios";
+    int counter1 = 0;
+    int counter2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +61,10 @@ public class LawDetail extends AppCompatActivity {
         txtComentario = findViewById(R.id.comment);
         comentarioPublicado  = findViewById(R.id.comentarioPublicado);
 
-        String name = getIntent().getExtras().getString("name");
-        String detalle = getIntent().getExtras().getString("detalle");
+        final String name = getIntent().getExtras().getString("name");
+        final String detalle = getIntent().getExtras().getString("detalle");
         String resumen = getIntent().getExtras().getString("resumen");
-       // String exp_articulo = getIntent().getExtras().getString("exp_articulo");
-
+        String exp_articulo = getIntent().getExtras().getString("exp_articulo");
 
         TextView tv_name = findViewById(R.id.art_nombre);
         TextView tv_detalle = findViewById(R.id.art_detalle);
@@ -81,43 +80,55 @@ public class LawDetail extends AppCompatActivity {
         btnCompartir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, "El mejor blog de android http://javaheros.blogspot.pe/");
-                startActivity(Intent.createChooser(intent, "Compartir en"));*/
-                String url = "http://www.twitter.com/intent/tweet?url=YOURURL&text=YOURTEXT";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LawDetail.this);
+                builder.setMessage("")
+                        .setTitle("Compartir en: ")
+                        .setCancelable(false)
+                        .setNeutralButton("Aceptar",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
 
+
+
+                String urlT = "http://www.twitter.com/intent/tweet?url=http://localhost:3000/api/ley&text="+name+detalle;
+                //String urlF = "https://www.facebook.com/sharer/sharer.php?u=http://localhost:3000/api/ley&text="+name+detalle;
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                //Intent f = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(urlT));
+                //f.setData(Uri.parse(urlF));
+                startActivity(i);
+                //startActivity(f);
             }
         });
 
         btnAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                counter1 = counter1+1;
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Gracias por votar",
                         Toast.LENGTH_SHORT);
 
                 toast.show();
                 btnDesagree.setEnabled(false);
-                Intent intent = new Intent(LawDetail.this, HomeLaw.class);
-                startActivity(intent);
             }
         });
 
         btnDesagree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                counter2 = counter2+1;
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Gracias por votar",
                         Toast.LENGTH_SHORT);
 
                 toast.show();
                 btnAgree.setEnabled(false);
-                Intent intent = new Intent(LawDetail.this, Resume.class);
-                startActivity(intent);
             }
         });
 
@@ -125,7 +136,7 @@ public class LawDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 publicarComentario();
-               Toast toast = Toast.makeText(getApplicationContext(),
+                Toast toast = Toast.makeText(getApplicationContext(),
                         "Comentario publicado",
                         Toast.LENGTH_SHORT);
 
@@ -134,6 +145,7 @@ public class LawDetail extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void publicarComentario(){
@@ -141,13 +153,11 @@ public class LawDetail extends AppCompatActivity {
         //PUBLICAR COMENTARIO EN TEXTVIEW
         String comentario = txtComentario.getText().toString();
         comentarioPublicado.setText(comentario);
-        txtComentario.setText(null);
         txtComentario.setEnabled(false);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(
-                Request.Method.POST,
-                URL,
+                Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -168,15 +178,22 @@ public class LawDetail extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> headers = new HashMap<String, String>();
-                String likes = ("likes");
-                String dislikes = ("likes");
+                String likes = String.valueOf(counter1);
+                String dislikes = String.valueOf(counter2);
                 String comentario = txtComentario.getText().toString();
-                headers.put("likes",likes);
-                headers.put("dislikes",dislikes);
-                headers.put("comentario",comentario);
+                headers.put("like",likes);
+                headers.put("dislike",dislikes);
+                headers.put("comentarios",comentario);
                 return headers;
             }
         };
         requestQueue.add(stringRequest);
     }
+
 }
+
+
+
+
+
+
